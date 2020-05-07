@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+<script>
+    function testTime() {
+        var cou = function () {
+            var count = 0;
+            return {
+                add: function () {
+                    count++;
+                },
+                get: function () {
+                    return count;
+                }
+            }
+        }();
+        var val = function () {
+            var value = 1;
+            return {
+                add: function () {
+                    value *= 2;
+                },
+                get: function () {
+                    return value;
+                }
+            }
+        }();
+        console.log(val.get())
+        var minutes = new Date().getMinutes();
+        interval = setInterval(function () {
+            cou.add();
+            if (cou.get() > 10 || new Date().getMinutes() > minutes) {
+                clearInterval(interval);
+                console.log("一分钟了朋友");
+                test();
+                return;
+            }
+            val.add();
+            console.log(val.get())
+        }, 5000)
+    }
+
+    function testMail(telephone, mail) {
+        const telFormat = /^[1]+[0-9]{10}$/;
+        let tel = (telFormat.test(telephone)) ? "right" : "wrong";
+        const maiFormat = /^([a-zA-Z\d])(\w|\-)+@[a-zA-Z\d]+\.[a-zA-Z]{2,4}$/;
+        let mai = (maiFormat.test(mail)) ? "right" : "wrong";
+        console.log("The telephone is " + tel + " and the mail is " + mai + "!");
+    }
+
+    function testRedundancy(str) {
+        const format = /\b([a-z]+) \1\b/gi;
+        let arr = str.match(format);
+        if (arr.length > 10) {
+            arr.sort();
+            arr.length = 10;
+        }
+        let set = new Set(arr);
+        console.log(set);
+    }
+
+    function testKeyBoard(wantInput, actualInput) {
+        var num = 0;
+        var lack = new Set();
+        var want = wantInput.split("");
+        var actuals = actualInput.split("");
+        for (let i = 0; i < want.length; i++) {
+            if (!(want[i] === actuals[i - num])) {
+                lack.add(want[i].toUpperCase());
+                num++;
+            }
+        }
+        console.log(lack);
+    }
+
+    function testSpecialReverse(str) {
+        var strs;
+        strs = str.split(" ");
+        var output = "";
+        for (var i = 0; i < strs.length; i++) {
+            output = output + strs[strs.length - i - 1] + " ";
+        }
+        console.log(output);
+    }
+
+    function twoSum(nums, target) {
+        var map = new Map();
+        for (var i = 0; i < nums.length; i++) {
+            if (map.has(nums[i])) {
+                console.log([map.get(nums[i]), i]);
+            }
+            map.set(target - nums[i], i);
+        }
+    }
+
+    function lengthOfLongestSubstring(str) {
+        var longest = 0;
+        var current = 0;
+        var map = new Map();
+        var str1 = str.split('');
+        for (var i = 0; i < str1.length; i++) {
+            if (!map.has(str1[i])) {
+                current += 1;
+                longest = Math.max(current, longest);
+                map.set(str1[i], 0);
+            } else {
+                current = 0;
+                map.clear();
+            }
+        }
+        console.log(longest);
+    }
+
+    function Country() {
+        this.name = "国家";
+    }
+
+    function DevelopingCountry() {
+        Country.call(this, "发展中国家");
+        if (typeof this.sayHi != "function")
+            DevelopingCountry.prototype.sayHi = function () {
+                console.log('Hi,i am a developing country.');
+            };
+    }
+
+    function PoorCountry() {
+        this.name = "欠发达国家";
+        if (typeof this.saySad != "function")
+            PoorCountry.prototype.saySad = function () {
+                console.log('I am a sad poor country.');
+            };
+    }
+
+    PoorCountry.prototype = new Country();
+
+    function DevelopedCountry() {
+        Country.call(this);
+        if (typeof this.sayHappy == "function")
+            DevelopedCountry.prototype.sayHappy = function sayHappy() {
+                console.log('I am a Happy developed country.');
+            }
+    }
+
+    testTime();
+
+    function test() {
+        console.log("input：18521305739,'1918335982@qq.com'");
+        testMail(18521305739, '1918335982@qq.com');
+        console.log("input：'Is is the iS is cost of of gasoline going up up '");
+        testRedundancy('Is is the iS is cost of of gasoline going up up ');
+        console.log("input：'_This_is_a_test','hssaes'");
+        testKeyBoard('_This_is_a_test', 'hssaes');
+        console.log("input：'  hello  world!  '");
+        testSpecialReverse('  hello  world!  ');
+        console.log("input：[1,2,3,4],5");
+        twoSum([1, 2, 3, 4], 5);
+        console.log("input：'mmmmmoooooooddddd'");
+        lengthOfLongestSubstring('mmmmmoooooooddddd');
+        let country1 = new DevelopingCountry();
+        let country2 = new PoorCountry();
+        country1.sayHi();
+        country2.saySad();
+        DevelopedCountry();
+    }
+
+</script>
+</body>
+</html>
